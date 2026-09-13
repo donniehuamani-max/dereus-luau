@@ -23,8 +23,10 @@ jobs:
           test -f src/Compatibility.lua
           test -f src/Presets.lua
           test -f src/Diagnostics.lua
+          test -f src/Registry.lua
+          test -f src/Store.lua
           test -f docs/NOTICE.md
           test -f src/init.lua
           test -f CONTRIBUTING.md
           test -f SECURITY.md
-          grep -q 'Version = "2.6.0"' src/Dereus.lua
+          grep -q 'Version = "2.7.0"' src/Dereus.lua

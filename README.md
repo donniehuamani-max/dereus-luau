@@ -1,6 +1,6 @@
 # Dereus Luau
 
-**Dereus Luau 2.6.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
+**Dereus Luau 2.7.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Esta actualización cierra la última gran ronda visual y centra el proyecto en compatibilidad, logística, estabilidad y organización interna.
 
 > Dereus Luau es únicamente una librería de interfaz. Es neutral y de libre uso: puede incorporarse a cualquier proyecto que el usuario decida crear. Dereus no controla, dirige, participa ni representa esos proyectos.
 
@@ -93,6 +93,8 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui.Compatibility.*` | Detección de capacidades, llamadas protegidas y adaptadores configurables. |
 | `ui.Presets.*` | Temas Midnight, Graphite, Light y mezcla de overrides. |
 | `ui.Diagnostics.*` | Diagnóstico de montaje, llamadas protegidas, clamp y mensajes de error. |
+| `ui.Registry.*` | Registro central de instancias, conexiones y tareas cancelables. |
+| `ui.Store.*` | Estado observable para organizar la lógica de la interfaz. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -177,6 +179,8 @@ ReplicatedStorage/
       Compatibility.lua
       Presets.lua
       Diagnostics.lua
+      Registry.lua
+      Store.lua
       init.lua
 StarterPlayerScripts/
   Starter.client.lua
@@ -204,6 +208,29 @@ end)
 ```
 
 Problemas típicos: si no aparece la UI, revisa `Parent` o `ParentResolver`; si falla al crearla, proporciona `Player`; si una pantalla se duplica, destruye la instancia anterior con `ui:Destroy()`; si un valor se sale del rango, usa `ui:Clamp()` o `Diagnostics.Clamp()`.
+
+## Organización y logística
+
+Usa `Store` para separar el estado de la interfaz de sus componentes:
+
+```lua
+local store = ui.Store.new({ ActiveTab = "Home", Enabled = true })
+local unsubscribe = store:Subscribe(function(key, value)
+    print("changed", key, value)
+end)
+store:Set("ActiveTab", "Settings")
+```
+
+Para tareas que deben morir junto a la UI:
+
+```lua
+local thread = task.spawn(function()
+    -- trabajo de interfaz
+end)
+ui:Track(thread)
+```
+
+Cuando llamas `ui:Destroy()`, el registro central limpia conexiones, instancias y tareas rastreadas.
 
 Dereus tampoco garantiza que una versión concreta sea compatible con futuros cambios de Roblox. Las contribuciones deben incluir documentación y explicar cualquier cambio de API o comportamiento.
 

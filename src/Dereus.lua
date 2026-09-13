@@ -1,9 +1,10 @@
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
+local Registry = require(script.Registry)
 
 local Dereus = {}
 Dereus.__index = Dereus
-Dereus.Version = "2.6.0"
+Dereus.Version = "2.7.0"
 Dereus.Theme = {
     Background = Color3.fromRGB(18, 20, 29),
     Surface = Color3.fromRGB(27, 30, 42),
@@ -44,6 +45,7 @@ function Dereus.new(options)
     local player = options.Player or Players.LocalPlayer
     assert(player, "Dereus.new must run on the client or receive options.Player")
     local self = setmetatable({
+        _registry = Registry.new(),
         _connections = {},
         _instances = {},
         _destroyed = false,
@@ -58,6 +60,8 @@ function Dereus.new(options)
         Compatibility = Dereus.Compatibility,
         Presets = Dereus.Presets,
         Diagnostics = Dereus.Diagnostics,
+        Registry = Dereus.Registry,
+        Store = Dereus.Store,
     }, Dereus)
     self.Gui = create("ScreenGui", {
         Name = options.Name or "DereusUI",
@@ -73,16 +77,21 @@ end
 function Dereus:IsDestroyed() return self._destroyed end
 
 function Dereus:Register(instance)
-    if self._destroyed then instance:Destroy(); return instance end
+    if self._destroyed then if instance and instance.Destroy then instance:Destroy() end; return instance end
+    self._registry:Add(instance)
     table.insert(self._instances, instance)
     return instance
 end
 
 function Dereus:Connect(signal, callback)
     assert(not self._destroyed, "Cannot connect on a destroyed Dereus instance")
-    local connection = signal:Connect(callback)
+    local connection = self._registry:Connect(signal, callback)
     table.insert(self._connections, connection)
     return connection
+end
+
+function Dereus:Track(handle)
+    return self._registry:Track(handle)
 end
 
 function Dereus:Tween(instance, properties, duration, style, direction)
@@ -110,12 +119,7 @@ end
 function Dereus:Destroy()
     if self._destroyed then return end
     self._destroyed = true
-    for _, connection in ipairs(self._connections) do
-        if connection.Connected then connection:Disconnect() end
-    end
-    for _, instance in ipairs(self._instances) do
-        if instance and instance.Parent then instance:Destroy() end
-    end
+    self._registry:Destroy()
     if self.Gui then self.Gui:Destroy() end
     table.clear(self._connections)
     table.clear(self._instances)

@@ -15,4 +15,8 @@ jobs:
           test -f src/Components.lua
           test -f src/Motion.lua
           test -f src/Notify.lua
-          grep -q 'Version = "2.0.0"' src/Dereus.lua
+          test -f src/Window.lua
+          test -f src/init.lua
+          test -f CONTRIBUTING.md
+          test -f SECURITY.md
+          grep -q 'Version = "2.1.0"' src/Dereus.lua

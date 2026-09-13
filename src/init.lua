@@ -8,5 +8,6 @@ Dereus.Components = Components
 Dereus.Window = Window
 Dereus.Motion = Motion
 Dereus.Notify = Notify
+Dereus.VERSION = Dereus.Version
 
 return Dereus

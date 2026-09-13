@@ -20,8 +20,10 @@ jobs:
           test -f src/Layout.lua
           test -f src/Host.lua
           test -f src/Cinematic.lua
+          test -f src/Compatibility.lua
+          test -f src/Presets.lua
           test -f docs/NOTICE.md
           test -f src/init.lua
           test -f CONTRIBUTING.md
           test -f SECURITY.md
-          grep -q 'Version = "2.4.0"' src/Dereus.lua
+          grep -q 'Version = "2.5.0"' src/Dereus.lua

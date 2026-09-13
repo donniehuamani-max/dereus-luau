@@ -1,4 +1,4 @@
-# Compatibilidad de Dereus Luau 2.4.0
+# Compatibilidad de Dereus Luau 2.5.0
 
 Dereus está diseñado para código Luau autorizado que crea interfaces mediante las clases y servicios públicos de Roblox. El objetivo de esta versión es que el mismo código pueda montarse en una experiencia de Roblox, una herramienta local de Studio o un host que proporcione un contenedor GUI válido, sin acoplar la librería a APIs privadas.
 

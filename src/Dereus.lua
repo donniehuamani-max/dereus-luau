@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 
 local Dereus = {}
 Dereus.__index = Dereus
-Dereus.Version = "2.4.0"
+Dereus.Version = "2.5.0"
 Dereus.Theme = {
     Background = Color3.fromRGB(18, 20, 29),
     Surface = Color3.fromRGB(27, 30, 42),
@@ -55,6 +55,8 @@ function Dereus.new(options)
         Layout = Dereus.Layout,
         Host = Dereus.Host,
         Cinematic = Dereus.Cinematic,
+        Compatibility = Dereus.Compatibility,
+        Presets = Dereus.Presets,
     }, Dereus)
     self.Gui = create("ScreenGui", {
         Name = options.Name or "DereusUI",

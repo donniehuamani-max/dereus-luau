@@ -1,6 +1,6 @@
 # Dereus Luau
 
-**Dereus Luau 2.4.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
+**Dereus Luau 2.5.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
 
 > Dereus Luau es únicamente una librería de interfaz. Es neutral y de libre uso: puede incorporarse a cualquier proyecto que el usuario decida crear. Dereus no controla, dirige, participa ni representa esos proyectos.
 
@@ -33,6 +33,25 @@ local ui = Dereus.new({
 ```
 
 La librería no tiene dependencias externas: utiliza servicios y clases nativos de Roblox.
+
+Puedes cambiar la identidad visual sin reescribir componentes:
+
+```lua
+local ui = Dereus.new({
+    Theme = Dereus.Presets.Graphite,
+})
+```
+
+Para un host con contenedor propio, utiliza un adaptador neutral:
+
+```lua
+local adapter = Dereus.Compatibility.Adapter({
+    Name = "MyHost",
+    Parent = myGuiContainer,
+    Capabilities = { SupportsInput = true },
+})
+local ok, parent = ui.Host.Mount(ui.Gui, adapter, player)
+```
 
 ## Inicio rápido
 
@@ -71,6 +90,8 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui.Layout.*` | Escala, restricciones responsive, padding y centrado. |
 | `ui.Host.*` | Resolución y montaje mediante un adaptador de contenedor GUI. |
 | `ui.Cinematic.new(ui)` | Secuencias de animación con espera, reproducción asíncrona y skip. |
+| `ui.Compatibility.*` | Detección de capacidades, llamadas protegidas y adaptadores configurables. |
+| `ui.Presets.*` | Temas Midnight, Graphite, Light y mezcla de overrides. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -152,6 +173,8 @@ ReplicatedStorage/
       Layout.lua
       Host.lua
       Cinematic.lua
+      Compatibility.lua
+      Presets.lua
       init.lua
 StarterPlayerScripts/
   Starter.client.lua

@@ -1,0 +1,18 @@
+name: Luau validation
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate module files
+        run: |
+          test -f src/Dereus.lua
+          test -f src/Components.lua
+          test -f src/Motion.lua
+          test -f src/Notify.lua
+          grep -q 'Version = "2.0.0"' src/Dereus.lua

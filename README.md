@@ -1,6 +1,6 @@
 # Dereus Luau
 
-**Dereus Luau 2.1.0** es una librería open source de interfaces para **Roblox Studio y experiencias autorizadas de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración autorizadas, tutoriales, dashboards y experiencias de juego.
+**Dereus Luau 2.2.0** es una librería open source de interfaces para **Roblox Studio y experiencias autorizadas de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración autorizadas, tutoriales, dashboards y experiencias de juego.
 
 > Dereus es una librería de interfaz. No es un ejecutor, no contiene bypasses, no automatiza trampas y no está diseñada para evadir las reglas o protecciones de Roblox.
 
@@ -20,6 +20,15 @@ local ui = Dereus.new({
     Name = "MyInterface",
     IgnoreGuiInset = false,
     DisplayOrder = 20,
+})
+```
+
+Para hosts que montan la interfaz en un contenedor propio, usa `Parent`. También puedes proporcionar un `ParentResolver` controlado por tu aplicación; Dereus no depende de nombres ni APIs privadas de terceros:
+
+```lua
+local ui = Dereus.new({
+    Parent = myAuthorizedGuiContainer,
+    ParentTimeout = 5,
 })
 ```
 
@@ -58,6 +67,7 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui.Components.*` | Componentes `Panel`, `Stack`, `Label`, `Button`, `Input`, `Toggle` y `Slider`. |
 | `ui.Motion.*` | Entrada, salida, press, stagger y secuencias. |
 | `ui.Notify.new(ui, title, message, options?)` | Notificación apilable y auto-cerrable. |
+| `ui.Style.Surface(instance, theme, options?)` | Superficie con borde, radio, gradiente y sombra opcionales. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -78,9 +88,25 @@ local intro = ui.Motion.Sequence({
 intro:Play()
 ```
 
+## Apariencia profesional
+
+El módulo `Style` centraliza los detalles visuales para que una UI mantenga jerarquía y consistencia:
+
+```lua
+ui.Style.Surface(panel, ui.Theme, {
+    Shadow = true,
+    Gradient = { ui.Theme.Surface, ui.Theme.Background },
+    BorderTransparency = 0.25,
+})
+```
+
+Usa el color primario para acciones y estados activos, `Muted` para información secundaria y `Danger` únicamente para acciones destructivas o errores. Evita saturar una pantalla con gradientes, sombras o animaciones simultáneas.
+
 Para una cinemática de menú, mantén las transiciones cortas, no bloquees la interacción más tiempo del necesario y ofrece siempre un método de cierre o skip. La librería anima la interfaz; la lógica de juego y la autorización deben permanecer separadas.
 
 ## Compatibilidad y buenas prácticas
+
+La matriz de montaje completa está en [`docs/COMPATIBILITY.md`](./docs/COMPATIBILITY.md).
 
 Dereus está pensada para `LocalScript` y `ScreenGui` en Roblox Studio. Usa `Activated` en botones para cubrir mouse, touch y gamepad cuando Roblox lo soporte. El slider admite mouse y touch. Para experiencias con respawn, decide explícitamente si `ResetOnSpawn` debe ser `true` o `false`. Para plugins de Studio, proporciona un `Parent` apropiado en `Dereus.new` en vez de asumir `PlayerGui`.
 

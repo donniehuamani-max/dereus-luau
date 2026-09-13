@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 
 local Dereus = {}
 Dereus.__index = Dereus
-Dereus.Version = "2.1.0"
+Dereus.Version = "2.2.0"
 Dereus.Theme = {
     Background = Color3.fromRGB(18, 20, 29),
     Surface = Color3.fromRGB(27, 30, 42),
@@ -30,6 +30,15 @@ local function create(className, properties)
     return object
 end
 
+local function resolveParent(options, player)
+    if options.Parent then return options.Parent end
+    if options.ParentResolver then
+        local ok, parent = pcall(options.ParentResolver, player)
+        if ok and parent then return parent end
+    end
+    return player:WaitForChild("PlayerGui", options.ParentTimeout or 10)
+end
+
 function Dereus.new(options)
     options = options or {}
     local player = options.Player or Players.LocalPlayer
@@ -42,6 +51,7 @@ function Dereus.new(options)
         Player = player,
         Options = options,
         Motion = Dereus.Motion,
+        Style = Dereus.Style,
     }, Dereus)
     self.Gui = create("ScreenGui", {
         Name = options.Name or "DereusUI",
@@ -50,7 +60,7 @@ function Dereus.new(options)
         IgnoreGuiInset = options.IgnoreGuiInset == true,
         DisplayOrder = options.DisplayOrder or 10,
     })
-    self.Gui.Parent = options.Parent or player:WaitForChild("PlayerGui")
+    self.Gui.Parent = resolveParent(options, player)
     return self
 end
 

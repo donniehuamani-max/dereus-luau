@@ -8,8 +8,10 @@
 
 - Theme tokens for background, surfaces, typography, borders, and radius
 - Lifecycle-safe `Dereus.new()` instances with `Destroy()` cleanup
-- Reusable `Panel`, `Stack`, `Label`, `Button`, and `Input` components
+- Full `Window` and `Tab` shell API for Roblox Studio interfaces
+- Reusable `Panel`, `Stack`, `Label`, `Button`, `Input`, `Section`, `Toggle`, and `Slider` components
 - Cinematic motion helpers: enter, press, tween, spring-like easing
+- Built for authorized Studio experiences, tools, plugins, dashboards, and admin interfaces
 - Auto-dismissing notifications
 - Hover, focus, press, and keyboard-friendly interaction states
 - No external dependencies; Roblox services only
@@ -39,6 +41,29 @@ end)
 
 ui.Motion.Enter(panel)
 ```
+
+## Window API
+
+```lua
+local window = ui.Window.new(ui, {
+    Title = "Dereus Control Center",
+    Size = UDim2.fromOffset(620, 440),
+})
+
+local home = window:AddTab("Home", "⌂")
+ui.Components.Section(home.Page, ui.Theme, "Actions")
+ui.Components.Button(home.Page, ui, "Launch", function()
+    print("Authorized action")
+end)
+ui.Components.Toggle(home.Page, ui, "Enabled", true, function(enabled)
+    print("Enabled:", enabled)
+end)
+ui.Components.Slider(home.Page, ui, "Opacity", 0, 100, 80, function(value)
+    print("Opacity:", value)
+end)
+```
+
+`Window:AddTab()` creates an isolated scrolling page and tab button. Use `window:SelectTab(tab)` to switch pages programmatically. Every connection and instance is registered with the parent `ui` instance, so `ui:Destroy()` cleans up the complete interface safely.
 
 ## Architecture
 

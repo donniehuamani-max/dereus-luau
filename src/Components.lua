@@ -59,4 +59,87 @@ function Components.Input(parent, ui, placeholder, callback, props)
     return input
 end
 
+function Components.Section(parent, theme, title)
+    local section = Instance.new("TextLabel")
+    section.BackgroundTransparency = 1
+    section.Size = UDim2.new(1, 0, 0, 24)
+    section.Text = string.upper(title)
+    section.TextColor3 = theme.Muted
+    section.TextSize = 11
+    section.Font = Enum.Font.GothamBold
+    section.TextXAlignment = Enum.TextXAlignment.Left
+    section.Parent = parent
+    return section
+end
+
+function Components.Toggle(parent, ui, label, default, callback)
+    local row = Instance.new("TextButton")
+    row.AutoButtonColor = false
+    row.Text = label
+    row.TextColor3 = ui.Theme.Text
+    row.TextSize = 14
+    row.Font = Enum.Font.GothamMedium
+    row.TextXAlignment = Enum.TextXAlignment.Left
+    row.BackgroundColor3 = ui.Theme.Surface
+    row.Size = UDim2.new(1, 0, 0, 42)
+    row.Parent = parent
+    corner(row, ui.Theme.Radius)
+    local enabled = default == true
+    local indicator = Instance.new("Frame")
+    indicator.AnchorPoint = Vector2.new(1, 0.5)
+    indicator.Position = UDim2.new(1, -12, 0.5, 0)
+    indicator.Size = UDim2.fromOffset(34, 18)
+    indicator.BackgroundColor3 = enabled and ui.Theme.Primary or ui.Theme.Background
+    indicator.Parent = row
+    corner(indicator, UDim.new(1, 0))
+    ui:Connect(row.MouseButton1Click, function()
+        enabled = not enabled
+        ui:Tween(indicator, { BackgroundColor3 = enabled and ui.Theme.Primary or ui.Theme.Background }, 0.2)
+        if callback then callback(enabled) end
+    end)
+    return row
+end
+
+function Components.Slider(parent, ui, label, min, max, default, callback)
+    local holder = Instance.new("Frame")
+    holder.BackgroundTransparency = 1
+    holder.Size = UDim2.new(1, 0, 0, 54)
+    holder.Parent = parent
+    Components.Label(holder, ui.Theme, label, { Size = UDim2.new(1, -50, 0, 22) })
+    local value = Instance.new("TextLabel")
+    value.BackgroundTransparency = 1
+    value.Position = UDim2.new(1, -48, 0, 0)
+    value.Size = UDim2.fromOffset(48, 22)
+    value.TextColor3 = ui.Theme.Primary
+    value.TextSize = 13
+    value.Font = Enum.Font.GothamBold
+    value.Parent = holder
+    local bar = Instance.new("Frame")
+    bar.Position = UDim2.fromOffset(0, 30)
+    bar.Size = UDim2.new(1, 0, 0, 8)
+    bar.BackgroundColor3 = ui.Theme.Surface
+    bar.Parent = holder
+    corner(bar, UDim.new(1, 0))
+    local fill = Instance.new("Frame")
+    fill.BackgroundColor3 = ui.Theme.Primary
+    fill.Size = UDim2.fromScale(0, 1)
+    fill.Parent = bar
+    corner(fill, UDim.new(1, 0))
+    local current = math.clamp(default or min, min, max)
+    local function setValue(nextValue)
+        current = math.clamp(nextValue, min, max)
+        local alpha = (current - min) / (max - min)
+        fill.Size = UDim2.fromScale(alpha, 1)
+        value.Text = tostring(math.floor(current))
+        if callback then callback(current) end
+    end
+    ui:Connect(bar.InputBegan, function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            setValue(min + (max - min) * math.clamp((input.Position.X - bar.AbsolutePosition.X) / bar.AbsoluteSize.X, 0, 1))
+        end
+    end)
+    setValue(current)
+    return holder
+end
+
 return Components

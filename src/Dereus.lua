@@ -9,6 +9,7 @@ Dereus.Theme = {
     Surface = Color3.fromRGB(27, 30, 42),
     SurfaceHover = Color3.fromRGB(37, 41, 56),
     Primary = Color3.fromRGB(183, 255, 84),
+    PrimaryForeground = Color3.fromRGB(24, 31, 18),
     Text = Color3.fromRGB(245, 247, 250),
     Muted = Color3.fromRGB(157, 163, 177),
     Border = Color3.fromRGB(58, 63, 82),

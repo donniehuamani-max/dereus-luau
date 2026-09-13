@@ -1,6 +1,6 @@
 # Dereus Luau
 
-**Dereus Luau 2.5.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
+**Dereus Luau 2.6.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
 
 > Dereus Luau es únicamente una librería de interfaz. Es neutral y de libre uso: puede incorporarse a cualquier proyecto que el usuario decida crear. Dereus no controla, dirige, participa ni representa esos proyectos.
 
@@ -92,6 +92,7 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui.Cinematic.new(ui)` | Secuencias de animación con espera, reproducción asíncrona y skip. |
 | `ui.Compatibility.*` | Detección de capacidades, llamadas protegidas y adaptadores configurables. |
 | `ui.Presets.*` | Temas Midnight, Graphite, Light y mezcla de overrides. |
+| `ui.Diagnostics.*` | Diagnóstico de montaje, llamadas protegidas, clamp y mensajes de error. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -175,6 +176,7 @@ ReplicatedStorage/
       Cinematic.lua
       Compatibility.lua
       Presets.lua
+      Diagnostics.lua
       init.lua
 StarterPlayerScripts/
   Starter.client.lua
@@ -185,6 +187,23 @@ StarterPlayerScripts/
 Dereus se distribuye bajo la licencia MIT incluida en este repositorio. Puedes usarla, modificarla, redistribuirla e incorporarla en proyectos personales, educativos o comerciales respetando esa licencia. También puedes incorporarla en proyectos de cualquier naturaleza que decidas desarrollar.
 
 El integrador es responsable de su propio código, contenido, datos, permisos, seguridad, cumplimiento de las reglas de Roblox y legislación aplicable. Dereus no reclama propiedad, control, participación, representación ni beneficio sobre los proyectos creados con la librería, sean legales o ilegales, y no se hace responsable por daños, sanciones, pérdidas, abuso, fraude, explotación, trampas, acceso no autorizado o cualquier otro uso que un tercero dé a un proyecto que la incluya. **Dereus Luau no tiene relación con las acciones, decisiones o finalidades del proyecto usuario: únicamente proporciona código de interfaz bajo licencia MIT.**
+
+## Soluciones rápidas
+
+```lua
+local report = ui.Diagnostics.Check(ui)
+if not report.Ok then
+    for _, issue in ipairs(report.Issues) do warn(issue.Code, issue.Message) end
+end
+
+local ok, result = ui:Try("load-data", function()
+    return loadData()
+end, function(label, err)
+    warn(ui.Diagnostics.FormatError(label, err))
+end)
+```
+
+Problemas típicos: si no aparece la UI, revisa `Parent` o `ParentResolver`; si falla al crearla, proporciona `Player`; si una pantalla se duplica, destruye la instancia anterior con `ui:Destroy()`; si un valor se sale del rango, usa `ui:Clamp()` o `Diagnostics.Clamp()`.
 
 Dereus tampoco garantiza que una versión concreta sea compatible con futuros cambios de Roblox. Las contribuciones deben incluir documentación y explicar cualquier cambio de API o comportamiento.
 

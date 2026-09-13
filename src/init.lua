@@ -9,6 +9,7 @@ local Host = require(script.Host)
 local Cinematic = require(script.Cinematic)
 local Compatibility = require(script.Compatibility)
 local Presets = require(script.Presets)
+local Diagnostics = require(script.Diagnostics)
 
 Dereus.Components = Components
 Dereus.Window = Window
@@ -20,6 +21,7 @@ Dereus.Host = Host
 Dereus.Cinematic = Cinematic
 Dereus.Compatibility = Compatibility
 Dereus.Presets = Presets
+Dereus.Diagnostics = Diagnostics
 Dereus.VERSION = Dereus.Version
 
 return Dereus

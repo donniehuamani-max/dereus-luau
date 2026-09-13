@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 
 local Dereus = {}
 Dereus.__index = Dereus
-Dereus.Version = "2.5.0"
+Dereus.Version = "2.6.0"
 Dereus.Theme = {
     Background = Color3.fromRGB(18, 20, 29),
     Surface = Color3.fromRGB(27, 30, 42),
@@ -57,6 +57,7 @@ function Dereus.new(options)
         Cinematic = Dereus.Cinematic,
         Compatibility = Dereus.Compatibility,
         Presets = Dereus.Presets,
+        Diagnostics = Dereus.Diagnostics,
     }, Dereus)
     self.Gui = create("ScreenGui", {
         Name = options.Name or "DereusUI",
@@ -93,6 +94,17 @@ function Dereus:Tween(instance, properties, duration, style, direction)
     ), properties)
     tween:Play()
     return tween
+end
+
+function Dereus:Try(label, callback, onError)
+    local ok, result = pcall(callback)
+    if not ok and onError then onError(label, result) end
+    return ok, result
+end
+
+function Dereus:Clamp(value, minimum, maximum, fallback)
+    if type(value) ~= "number" or type(minimum) ~= "number" or type(maximum) ~= "number" or maximum < minimum then return fallback or minimum end
+    return math.clamp(value, minimum, maximum)
 end
 
 function Dereus:Destroy()

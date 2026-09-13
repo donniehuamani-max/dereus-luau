@@ -50,4 +50,43 @@ function Components.Slider(parent, ui, label, min, max, default, callback, props
     ui:Connect(bar.InputBegan, function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = true; fromInput(input) end end); ui:Connect(UserInputService.InputChanged, function(input) if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then fromInput(input) end end); ui:Connect(UserInputService.InputEnded, function(input) if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end end); setValue(current, false); holder.Set = function(v) setValue(v, true) end; holder.Get = function() return current end; return holder
 end
 
+function Components.Divider(parent, theme, props)
+    props = props or {}
+    local divider = Instance.new("Frame")
+    divider.Name = props.Name or "Divider"
+    divider.BackgroundColor3 = props.Color or theme.Border
+    divider.BackgroundTransparency = props.Transparency or 0.25
+    divider.BorderSizePixel = 0
+    divider.Size = props.Size or UDim2.new(1, 0, 0, 1)
+    divider.LayoutOrder = props.LayoutOrder or 0
+    divider.Parent = parent
+    return divider
+end
+
+function Components.Badge(parent, ui, text, props)
+    props = props or {}
+    local badge = Instance.new("TextLabel")
+    badge.Name = props.Name or "Badge"
+    badge.Text = text or "NEW"
+    badge.TextSize = props.TextSize or 10
+    badge.Font = Enum.Font.GothamBold
+    badge.TextColor3 = props.TextColor or ui.Theme.PrimaryForeground
+    badge.BackgroundColor3 = props.Color or ui.Theme.Primary
+    badge.Size = props.Size or UDim2.fromOffset(54, 22)
+    badge.Parent = parent
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = badge
+    return badge
+end
+
+function Components.Search(parent, ui, placeholder, callback, props)
+    props = props or {}
+    local input = Components.Input(parent, ui, placeholder or "Search", function(text, enterPressed, field)
+        if callback then callback(text, enterPressed, field) end
+    end, props)
+    input.Name = props.Name or "Search"
+    return input
+end
+
 return Components

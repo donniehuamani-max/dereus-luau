@@ -1,12 +1,18 @@
-# Dereus Luau
+# Dereus Library
 
-**Dereus Luau 2.7.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Esta actualización cierra la última gran ronda visual y centra el proyecto en compatibilidad, logística, estabilidad y organización interna.
+**Dereus Library 2.7.0** es una librería open source de interfaces para Lua, Luau, Roblox Studio y hosts autorizados, diseñada alrededor de una estética compacta, animada y cinematográfica.
 
-> Dereus Luau es únicamente una librería de interfaz. Es neutral y de libre uso: puede incorporarse a cualquier proyecto que el usuario decida crear. Dereus no controla, dirige, participa ni representa esos proyectos.
+> Dereus Library es una librería de interfaz neutral y portable: ofrece un core Lua sin dependencias de Roblox y un adaptador Luau/Roblox con ventanas, controles, temas y motion.
 
 ## Principios del proyecto
 
 Dereus prioriza cinco principios: API composable, limpieza automática, animación consistente, compatibilidad con Roblox Studio y responsabilidad del integrador. La librería no decide qué hace el código que la consume; el creador de la experiencia debe revisar sus permisos, seguridad, RemoteEvents, moderación y cumplimiento de las reglas aplicables.
+
+## Compatibilidad e instalación
+
+- Lua 5.1, 5.2 y 5.3: core portable en `src/Portable.lua` y `src/Utils.lua`.
+- Luau y Roblox Studio: ventanas, controles, notificaciones, motion y temas basados en Instances.
+- El core portable no depende de globals de Roblox y es apto para herramientas, servidores y tests.
 
 ## Instalación
 
@@ -99,6 +105,20 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 ## Motion y cinemáticas de interfaz
 
 `Motion.Enter` y `Motion.Exit` combinan desplazamiento y transparencia cuando la clase lo permite. `Motion.Stagger` introduce elementos en cascada; `Motion.Sequence` permite organizar una secuencia lineal de tweens y pausas.
+
+### API portable
+
+- `Dereus.Portable.new(options?)` crea estado de ciclo de vida compatible con Lua.
+- `Dereus.Utils.merge`, `clamp`, `map` y `once` son utilidades sin dependencias.
+
+### Componentes
+
+- `ui.Components.Panel`, `Stack`, `Label`, `Button`, `Input`, `Section`, `Toggle` y `Slider`.
+- `ui.Window.new(ui, options?)` crea ventanas con tabs y páginas aisladas.
+
+### Motion
+
+`Motion.Enter`, `Exit`, `Stagger` y `Sequence` organizan transiciones y cinemáticas con cleanup centralizado.
 
 ```lua
 ui.Motion.Stagger({ card1, card2, card3 }, {

@@ -1,6 +1,6 @@
 # Dereus Luau
 
-**Dereus Luau 2.3.0** es una librería open source de interfaces para **Roblox Studio y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
+**Dereus Luau 2.4.0** es una librería open source de interfaces para **Roblox Studio, hosts Luau y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
 
 > Dereus Luau es únicamente una librería de interfaz. Es neutral y de libre uso: puede incorporarse a cualquier proyecto que el usuario decida crear. Dereus no controla, dirige, participa ni representa esos proyectos.
 
@@ -69,6 +69,8 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui.Notify.new(ui, title, message, options?)` | Notificación apilable y auto-cerrable. |
 | `ui.Style.Surface(instance, theme, options?)` | Superficie con borde, radio, gradiente y sombra opcionales. |
 | `ui.Layout.*` | Escala, restricciones responsive, padding y centrado. |
+| `ui.Host.*` | Resolución y montaje mediante un adaptador de contenedor GUI. |
+| `ui.Cinematic.new(ui)` | Secuencias de animación con espera, reproducción asíncrona y skip. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -87,6 +89,18 @@ local intro = ui.Motion.Sequence({
     { Instance = headline, Properties = { TextTransparency = 0 }, Options = { Duration = 0.35 } },
 })
 intro:Play()
+```
+
+Para escenas más largas:
+
+```lua
+local scene = ui.Cinematic.new(ui)
+scene:Add(logo, { ImageTransparency = 0 }, { Duration = 0.5 })
+scene:Wait(0.2)
+scene:Add(title, { TextTransparency = 0 }, { Duration = 0.35 })
+scene:PlayAsync(function(wasSkipped)
+    print("Cinematic complete", wasSkipped)
+end)
 ```
 
 ## Apariencia profesional
@@ -136,6 +150,8 @@ ReplicatedStorage/
       Window.lua
       Style.lua
       Layout.lua
+      Host.lua
+      Cinematic.lua
       init.lua
 StarterPlayerScripts/
   Starter.client.lua
@@ -145,7 +161,7 @@ StarterPlayerScripts/
 
 Dereus se distribuye bajo la licencia MIT incluida en este repositorio. Puedes usarla, modificarla, redistribuirla e incorporarla en proyectos personales, educativos o comerciales respetando esa licencia. También puedes incorporarla en proyectos de cualquier naturaleza que decidas desarrollar.
 
-El integrador es responsable de su propio código, contenido, datos, permisos, seguridad, cumplimiento de las reglas de Roblox y legislación aplicable. Dereus no reclama propiedad, control, participación, representación ni beneficio sobre los proyectos creados con la librería, sean legales o ilegales, y no se hace responsable por daños, sanciones, pérdidas, abuso, fraude, explotación, trampas, acceso no autorizado o cualquier otro uso que un tercero dé a un proyecto que la incluya. Dereus Luau no tiene relación con las acciones, decisiones o finalidades del proyecto usuario: únicamente proporciona código de interfaz bajo licencia MIT.
+El integrador es responsable de su propio código, contenido, datos, permisos, seguridad, cumplimiento de las reglas de Roblox y legislación aplicable. Dereus no reclama propiedad, control, participación, representación ni beneficio sobre los proyectos creados con la librería, sean legales o ilegales, y no se hace responsable por daños, sanciones, pérdidas, abuso, fraude, explotación, trampas, acceso no autorizado o cualquier otro uso que un tercero dé a un proyecto que la incluya. **Dereus Luau no tiene relación con las acciones, decisiones o finalidades del proyecto usuario: únicamente proporciona código de interfaz bajo licencia MIT.**
 
 Dereus tampoco garantiza que una versión concreta sea compatible con futuros cambios de Roblox. Las contribuciones deben incluir documentación y explicar cualquier cambio de API o comportamiento.
 

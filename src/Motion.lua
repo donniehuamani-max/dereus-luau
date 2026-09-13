@@ -109,4 +109,32 @@ function Motion.Hover(instance, ui, options)
     }
 end
 
+function Motion.Fade(instance, transparency, options)
+    options = options or {}
+    local properties = {}
+    if instance:IsA("TextLabel") or instance:IsA("TextButton") or instance:IsA("TextBox") then properties.TextTransparency = transparency end
+    if instance:IsA("ImageLabel") or instance:IsA("ImageButton") then properties.ImageTransparency = transparency end
+    if instance:IsA("GuiObject") and not next(properties) then properties.BackgroundTransparency = transparency end
+    return Motion.Play(instance, properties, options)
+end
+
+function Motion.Wipe(instance, options)
+    options = options or {}
+    local original = instance.Size
+    instance.Size = UDim2.new(0, 0, original.Y.Scale, original.Y.Offset)
+    return Motion.Play(instance, { Size = original }, { Duration = options.Duration or 0.5, Style = options.Style or Motion.Eases.Smooth })
+end
+
+function Motion.Bounce(instance, options)
+    options = options or {}
+    local original = instance.Position
+    local lift = original + UDim2.fromOffset(0, -(options.Amount or 12))
+    local sequence = Motion.Sequence({
+        { Instance = instance, Properties = { Position = lift }, Options = { Duration = 0.18, Style = Motion.Eases.Spring } },
+        { Instance = instance, Properties = { Position = original }, Options = { Duration = 0.28, Style = Motion.Eases.Spring } },
+    })
+    task.spawn(function() sequence:Play() end)
+    return sequence
+end
+
 return Motion

@@ -1,10 +1,12 @@
 return function()
     local Dereus = require(script.Parent.Parent.src)
-    assert(Dereus.Version == "2.3.0", "version should be 2.3.0")
+    assert(Dereus.Version == "2.4.0", "version should be 2.4.0")
     assert(Dereus.Theme.Primary ~= nil, "default theme should include Primary")
     assert(Dereus.Components.Button ~= nil, "button component should be exported")
     assert(Dereus.Motion.Sequence ~= nil, "motion sequence should be exported")
     assert(Dereus.Style.Surface ~= nil, "style surface should be exported")
     assert(Dereus.Layout.Responsive ~= nil, "responsive layout should be exported")
     assert(Dereus.Motion.Shake ~= nil, "shake motion should be exported")
+    assert(Dereus.Host.Mount ~= nil, "host mount should be exported")
+    assert(Dereus.Cinematic.new ~= nil, "cinematic builder should be exported")
 end

@@ -68,4 +68,45 @@ function Motion.Sequence(steps)
     return sequence
 end
 
+function Motion.Pulse(instance, options)
+    options = options or {}
+    local original = instance.Size
+    local amount = options.Amount or 0.025
+    local enlarged = UDim2.new(original.X.Scale * (1 + amount), original.X.Offset, original.Y.Scale * (1 + amount), original.Y.Offset)
+    return Motion.Play(instance, { Size = enlarged }, { Duration = options.Duration or 0.22, Style = Motion.Eases.Soft, RepeatCount = options.RepeatCount or 1, Reverses = true })
+end
+
+function Motion.Breathe(instance, options)
+    options = options or {}
+    local original = instance.BackgroundTransparency
+    local target = math.clamp(original + (options.Amount or 0.08), 0, 1)
+    return Motion.Play(instance, { BackgroundTransparency = target }, { Duration = options.Duration or 1.2, Style = Motion.Eases.Soft, RepeatCount = options.RepeatCount or 1, Reverses = true })
+end
+
+function Motion.Shake(instance, options)
+    options = options or {}
+    local original = instance.Position
+    local amount = options.Amount or 6
+    local sequence = Motion.Sequence({
+        { Instance = instance, Properties = { Position = original + UDim2.fromOffset(-amount, 0) }, Options = { Duration = 0.05, Style = Enum.EasingStyle.Quad } },
+        { Instance = instance, Properties = { Position = original + UDim2.fromOffset(amount, 0) }, Options = { Duration = 0.05, Style = Enum.EasingStyle.Quad } },
+        { Instance = instance, Properties = { Position = original }, Options = { Duration = 0.08, Style = Enum.EasingStyle.Quad } },
+    })
+    task.spawn(function() sequence:Play() end)
+    return sequence
+end
+
+function Motion.Hover(instance, ui, options)
+    options = options or {}
+    local normal = instance.BackgroundColor3
+    local hover = options.Color or ui.Theme.SurfaceHover
+    return {
+        Connect = function()
+            local enter = ui:Connect(instance.MouseEnter, function() ui:Tween(instance, { BackgroundColor3 = hover }, options.Duration or 0.16) end)
+            local leave = ui:Connect(instance.MouseLeave, function() ui:Tween(instance, { BackgroundColor3 = normal }, options.Duration or 0.2) end)
+            return enter, leave
+        end,
+    }
+end
+
 return Motion

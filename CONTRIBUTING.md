@@ -6,9 +6,9 @@ Describe el problema y el resultado esperado. Prueba los cambios en Roblox Studi
 
 ## Criterios de revisión
 
-Las contribuciones deben conservar la limpieza mediante `ui:Register` y `ui:Connect`, evitar dependencias innecesarias, usar nombres claros y no mezclar la presentación con la autoridad del juego. Las animaciones deben ser cancelables o de duración razonable y no deben impedir el cierre de la interfaz.
+Las contribuciones deben conservar la limpieza mediante `ui:Register` y `ui:Connect`, evitar dependencias innecesarias, usar nombres claros y documentar cualquier cambio visual, de compatibilidad o de rendimiento. Las animaciones deben ser cancelables o de duración razonable y no deben impedir el cierre de la interfaz.
 
-No se aceptan funciones destinadas a evadir protecciones, acceder sin autorización, automatizar trampas, robar datos o perjudicar a otros usuarios.
+Dereus es neutral respecto a los proyectos que incorporan la librería. Los pull requests se revisan por calidad técnica, estabilidad, claridad de API, documentación y compatibilidad; la librería no controla ni participa en la finalidad del proyecto integrador.
 
 ## Commits
 

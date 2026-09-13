@@ -1,8 +1,8 @@
 # Dereus Luau
 
-**Dereus Luau 2.2.0** es una librería open source de interfaces para **Roblox Studio y experiencias autorizadas de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración autorizadas, tutoriales, dashboards y experiencias de juego.
+**Dereus Luau 2.3.0** es una librería open source de interfaces para **Roblox Studio y experiencias de Roblox**, escrita en Luau y diseñada alrededor de una estética compacta, animada y cinematográfica. Sirve para menús, paneles de configuración, herramientas internas, interfaces de administración, tutoriales, dashboards y experiencias de juego.
 
-> Dereus es una librería de interfaz. No es un ejecutor, no contiene bypasses, no automatiza trampas y no está diseñada para evadir las reglas o protecciones de Roblox.
+> Dereus Luau es únicamente una librería de interfaz. Es neutral y de libre uso: puede incorporarse a cualquier proyecto que el usuario decida crear. Dereus no controla, dirige, participa ni representa esos proyectos.
 
 ## Principios del proyecto
 
@@ -65,9 +65,10 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui:Destroy()` | Desconecta señales, destruye instancias y elimina la interfaz. |
 | `ui.Window.new(ui, options?)` | Crea una ventana con pestañas. |
 | `ui.Components.*` | Componentes `Panel`, `Stack`, `Label`, `Button`, `Input`, `Toggle` y `Slider`. |
-| `ui.Motion.*` | Entrada, salida, press, stagger y secuencias. |
+| `ui.Motion.*` | Entrada, salida, press, stagger, secuencias, pulso, respiración, shake y hover. |
 | `ui.Notify.new(ui, title, message, options?)` | Notificación apilable y auto-cerrable. |
 | `ui.Style.Surface(instance, theme, options?)` | Superficie con borde, radio, gradiente y sombra opcionales. |
+| `ui.Layout.*` | Escala, restricciones responsive, padding y centrado. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -133,6 +134,8 @@ ReplicatedStorage/
       Motion.lua
       Notify.lua
       Window.lua
+      Style.lua
+      Layout.lua
       init.lua
 StarterPlayerScripts/
   Starter.client.lua
@@ -140,11 +143,11 @@ StarterPlayerScripts/
 
 ## Términos de uso y alcance
 
-Dereus se distribuye bajo la licencia MIT incluida en este repositorio. Puedes usarla, modificarla, redistribuirla e incorporarla en proyectos personales, educativos o comerciales respetando esa licencia.
+Dereus se distribuye bajo la licencia MIT incluida en este repositorio. Puedes usarla, modificarla, redistribuirla e incorporarla en proyectos personales, educativos o comerciales respetando esa licencia. También puedes incorporarla en proyectos de cualquier naturaleza que decidas desarrollar.
 
-El integrador es responsable de su propio código, contenido, datos, permisos, seguridad, cumplimiento de las reglas de Roblox y legislación aplicable. Dereus no reclama propiedad ni participación sobre los proyectos creados con la librería y no se hace responsable por daños, sanciones, pérdidas, abuso, fraude, explotación, trampas, acceso no autorizado o cualquier otro uso que un tercero dé a un proyecto que la incluya. Esta aclaración no convierte en legítimo un uso prohibido: cada usuario debe usarla únicamente en contextos autorizados y legales.
+El integrador es responsable de su propio código, contenido, datos, permisos, seguridad, cumplimiento de las reglas de Roblox y legislación aplicable. Dereus no reclama propiedad, control, participación, representación ni beneficio sobre los proyectos creados con la librería, sean legales o ilegales, y no se hace responsable por daños, sanciones, pérdidas, abuso, fraude, explotación, trampas, acceso no autorizado o cualquier otro uso que un tercero dé a un proyecto que la incluya. Dereus Luau no tiene relación con las acciones, decisiones o finalidades del proyecto usuario: únicamente proporciona código de interfaz bajo licencia MIT.
 
-Dereus tampoco garantiza que una versión concreta sea compatible con futuros cambios de Roblox. Las contribuciones deben conservar la separación entre presentación y lógica sensible, incluir documentación y evitar funciones destinadas a eludir controles, obtener acceso no autorizado o perjudicar a otros usuarios.
+Dereus tampoco garantiza que una versión concreta sea compatible con futuros cambios de Roblox. Las contribuciones deben incluir documentación y explicar cualquier cambio de API o comportamiento.
 
 ## Contribuir
 

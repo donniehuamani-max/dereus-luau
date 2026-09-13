@@ -1,7 +1,9 @@
-# Seguridad
+# Seguridad y alcance
 
-Dereus es una capa de presentación. No debe tratarse como un sistema de autorización ni como una frontera de seguridad. Cualquier acción sensible debe validarse en el servidor y sus RemoteEvents deben comprobar identidad, permisos, tipos, rangos y frecuencia.
+Dereus Luau es una librería de interfaz neutral y de libre uso. Puede incorporarse a proyectos de cualquier naturaleza que el usuario decida desarrollar. Dereus no controla, dirige, participa, representa ni se beneficia de esos proyectos y no tiene relación con sus acciones, decisiones o finalidades.
 
-No reportes aquí solicitudes para crear exploits, bypasses, trampas, robo de sesiones o acceso no autorizado. Esas funciones están fuera del alcance del proyecto y no serán incorporadas.
+La librería únicamente proporciona componentes visuales, motion, layout y utilidades de montaje. El usuario del proyecto es responsable de su propio código, contenido, datos, permisos, seguridad, cumplimiento de las reglas de Roblox y legislación aplicable.
 
-Para un error técnico de seguridad en la librería, abre un issue privado o contacta al mantenedor con una descripción mínima, versión afectada y pasos de reproducción sin incluir secretos.
+Dereus se distribuye bajo la licencia MIT. El uso de la librería no transfiere a Dereus responsabilidad, propiedad ni participación sobre el producto que la incorpore. No se ofrece garantía de que una versión concreta sea compatible con cambios futuros de Roblox o de cualquier host.
+
+Para reportar un error técnico de la librería, abre un issue con la versión afectada y pasos de reproducción sin incluir secretos.

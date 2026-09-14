@@ -1,7 +1,10 @@
 -- Dereus Library 2.8.0 single-file bundle. Generated from src/.
--- The bundle targets Lua/Luau runtimes. Roblox UI modules require Roblox services.
+-- Roblox-dependent modules are loaded opportunistically; portable modules remain usable in Lua/Luau.
 local modules = {}
-local function define(name, factory) modules[name] = factory() end
+local function define(name, factory)
+    local ok, value = pcall(factory)
+    if ok then modules[name] = value end
+end
 define('Registry', function()
 local Registry = {}
 Registry.__index = Registry
@@ -94,6 +97,77 @@ end
 function LuaCompat.Noop() end
 
 return LuaCompat
+
+end)
+define('Portable', function()
+local Portable = {}
+Portable.__index = Portable
+
+local function copy(source)
+    local result = {}
+    for key, value in pairs(source or {}) do result[key] = value end
+    return result
+end
+
+function Portable.new(options)
+    local self = setmetatable({
+        Name = (options and options.Name) or "Dereus",
+        Theme = copy(options and options.Theme or {}),
+        _cleanups = {},
+        _destroyed = false,
+    }, Portable)
+    return self
+end
+
+function Portable:OnCleanup(cleanup)
+    assert(type(cleanup) == "function", "cleanup must be a function")
+    if self._destroyed then cleanup() else table.insert(self._cleanups, cleanup) end
+    return cleanup
+end
+
+function Portable:Destroy()
+    if self._destroyed then return end
+    self._destroyed = true
+    for index = #self._cleanups, 1, -1 do pcall(self._cleanups[index]) end
+    self._cleanups = {}
+end
+
+function Portable:IsDestroyed()
+    return self._destroyed
+end
+
+return Portable
+
+end)
+define('Utils', function()
+local Utils = {}
+
+function Utils.merge(base, override)
+    local result = {}
+    for key, value in pairs(base or {}) do result[key] = value end
+    for key, value in pairs(override or {}) do result[key] = value end
+    return result
+end
+
+function Utils.clamp(value, minimum, maximum)
+    return math.max(minimum, math.min(maximum, value))
+end
+
+function Utils.map(value, fromMinimum, fromMaximum, toMinimum, toMaximum)
+    local alpha = (value - fromMinimum) / (fromMaximum - fromMinimum)
+    return toMinimum + (toMaximum - toMinimum) * alpha
+end
+
+function Utils.once(callback)
+    local called = false
+    return function(...)
+        if called then return end
+        called = true
+        return callback(...)
+    end
+end
+
+return Utils
 
 end)
 define('Dereus', function()
@@ -937,7 +1011,7 @@ end
 return Store
 
 end)
-local Dereus = modules.Dereus
+local Dereus = modules.Dereus or modules.Portable or {}
 Dereus.Components = modules.Components
 Dereus.Window = modules.Window
 Dereus.Motion = modules.Motion
@@ -952,6 +1026,8 @@ Dereus.Diagnostics = modules.Diagnostics
 Dereus.Registry = modules.Registry
 Dereus.Store = modules.Store
 Dereus.LuaCompat = modules.LuaCompat
+Dereus.Utils = modules.Utils
+Dereus.Portable = modules.Portable
 Dereus.LibraryName = "Dereus Library"
-Dereus.VERSION = Dereus.Version
+Dereus.VERSION = Dereus.Version or "2.8.0"
 return Dereus

@@ -14,10 +14,12 @@ local Registry = require(script.Registry)
 local Store = require(script.Store)
 local Portable = require(script.Portable)
 local Utils = require(script.Utils)
+local LuaCompat = require(script.LuaCompat)
 
 Dereus.Components = Components
 Dereus.Portable = Portable
 Dereus.Utils = Utils
+Dereus.LuaCompat = LuaCompat
 Dereus.Version = "2.7.0"
 Dereus.Window = Window
 Dereus.Motion = Motion
@@ -31,6 +33,8 @@ Dereus.Presets = Presets
 Dereus.Diagnostics = Diagnostics
 Dereus.Registry = Registry
 Dereus.Store = Store
+Dereus.LuaCompat = LuaCompat
+Dereus.LibraryName = "Dereus Library"
 Dereus.VERSION = Dereus.Version
 
 return Dereus

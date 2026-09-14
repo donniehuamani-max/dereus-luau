@@ -1,4 +1,4 @@
-# Compatibilidad de Dereus Luau 2.7.0
+# Compatibilidad de Dereus Library 2.8.0
 
 Dereus está diseñado para código Luau autorizado que crea interfaces mediante las clases y servicios públicos de Roblox. El objetivo de esta versión es que el mismo código pueda montarse en una experiencia de Roblox, una herramienta local de Studio o un host que proporcione un contenedor GUI válido, sin acoplar la librería a APIs privadas.
 
@@ -37,6 +37,10 @@ El callback se ejecuta protegido con `pcall`. Si no devuelve un contenedor, Dere
 La API `Host.Resolve`, `Host.Capabilities` y `Host.Mount` ofrece el mismo flujo como adaptador reutilizable para integraciones que prefieren separar la resolución del contenedor de la creación de la UI.
 
 Para mantener una integración grande ordenada, usa `Registry` para recursos y `Store` para estado. La compatibilidad depende del contenedor que entregue el host; la lógica de la aplicación debe permanecer fuera del núcleo visual.
+
+`LuaCompat` funciona sin Roblox para tareas puras de runtime, tablas y manejo seguro de callbacks. La capa visual continúa necesitando las clases y servicios de Roblox porque una interfaz Roblox depende de `Instance`, `ScreenGui` y `TweenService`.
+
+`bundle.lua` ofrece una distribución de un solo archivo para runners de pruebas y entornos sin el árbol de módulos de Studio. Para evitar colisiones, usa siempre `Parent` con un contenedor controlado y un `Name` estable; `AutoCleanup` elimina una interfaz anterior con ese nombre dentro de ese contenedor antes de montar la nueva.
 
 ## Estabilidad
 

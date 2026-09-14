@@ -4,7 +4,8 @@ local Registry = require(script.Registry)
 
 local Dereus = {}
 Dereus.__index = Dereus
-Dereus.Version = "2.7.0"
+Dereus.Version = "2.8.0"
+Dereus.LibraryName = "Dereus Library"
 Dereus.Theme = {
     Background = Color3.fromRGB(18, 20, 29),
     Surface = Color3.fromRGB(27, 30, 42),
@@ -62,6 +63,8 @@ function Dereus.new(options)
         Diagnostics = Dereus.Diagnostics,
         Registry = Dereus.Registry,
         Store = Dereus.Store,
+        LuaCompat = Dereus.LuaCompat,
+        LibraryName = Dereus.LibraryName,
     }, Dereus)
     self.Gui = create("ScreenGui", {
         Name = options.Name or "DereusUI",
@@ -70,6 +73,13 @@ function Dereus.new(options)
         IgnoreGuiInset = options.IgnoreGuiInset == true,
         DisplayOrder = options.DisplayOrder or 10,
     })
+    if options.AutoCleanup ~= false then
+        local parent = resolveParent(options, player)
+        if parent and options.Name then
+            local previous = parent:FindFirstChild(options.Name)
+            if previous then previous:Destroy() end
+        end
+    end
     self.Gui.Parent = resolveParent(options, player)
     return self
 end

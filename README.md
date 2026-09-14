@@ -1,6 +1,10 @@
 # Dereus Library
 
+<<<<<<< HEAD
 **Dereus Library 2.7.0** es una librería open source de interfaces para Lua, Luau, Roblox Studio y hosts autorizados, diseñada alrededor de una estética compacta, animada y cinematográfica.
+=======
+**Dereus Library 2.8.0** es una librería open source de interfaces y utilidades para **Lua, Luau, Roblox Studio, hosts Luau y experiencias de Roblox**. Esta actualización cambia oficialmente el nombre a Dereus Library, añade una capa portable para Lua/Luau, hace el último retoque visual y mantiene el foco en compatibilidad, logística, estabilidad y organización interna.
+>>>>>>> faad69c (feat: add portable single-file bundle and isolated mounting)
 
 > Dereus Library es una librería de interfaz neutral y portable: ofrece un core Lua sin dependencias de Roblox y un adaptador Luau/Roblox con ventanas, controles, temas y motion.
 
@@ -39,6 +43,36 @@ local ui = Dereus.new({
 ```
 
 La librería no tiene dependencias externas: utiliza servicios y clases nativos de Roblox.
+
+### Lua y Luau
+
+`LuaCompat` es la parte portable y no depende de Roblox:
+
+```lua
+local Compat = Dereus.LuaCompat
+print(Compat.Runtime()) -- lua, luau o roblox-luau
+local theme = Compat.Merge({ Accent = "green" }, { Radius = 12 })
+```
+
+Los módulos visuales que usan `ScreenGui`, `Instance` o `TweenService` requieren el runtime de Roblox. En Lua estándar pueden utilizarse las utilidades puras de `LuaCompat` y cualquier módulo que no necesite objetos Roblox.
+
+### Bundle de un solo archivo
+
+`bundle.lua` reúne los módulos públicos en un único archivo y elimina la dependencia de `require(script.Module)`. Puedes copiarlo a tu runner de pruebas o cargarlo desde un mecanismo de distribución que controles. El bundle no cambia los requisitos del runtime: las partes visuales siguen necesitando las APIs de Roblox, mientras que `LuaCompat` funciona para utilidades puras de Lua/Luau.
+
+### Montaje aislado y limpieza
+
+Pasa explícitamente un contenedor propio para evitar mezclar la UI con otras interfaces:
+
+```lua
+local ui = Dereus.new({
+    Name = "MyDereusUI",
+    Parent = myGuiContainer,
+    AutoCleanup = true,
+})
+```
+
+Si ya existe una interfaz con el mismo nombre dentro del contenedor elegido, Dereus la destruye antes de montar la nueva. También puedes limpiar una instancia concreta con `ui.Host.Cleanup(container, "MyDereusUI")`.
 
 Puedes cambiar la identidad visual sin reescribir componentes:
 
@@ -101,6 +135,7 @@ ui.Motion.Enter(window.Root, { Offset = 30, Duration = 0.55 })
 | `ui.Diagnostics.*` | Diagnóstico de montaje, llamadas protegidas, clamp y mensajes de error. |
 | `ui.Registry.*` | Registro central de instancias, conexiones y tareas cancelables. |
 | `ui.Store.*` | Estado observable para organizar la lógica de la interfaz. |
+| `ui.LuaCompat.*` | Runtime, clone, merge, clamp y llamadas seguras portables entre Lua y Luau. |
 
 ## Motion y cinemáticas de interfaz
 
@@ -201,6 +236,7 @@ ReplicatedStorage/
       Diagnostics.lua
       Registry.lua
       Store.lua
+      LuaCompat.lua
       init.lua
 StarterPlayerScripts/
   Starter.client.lua

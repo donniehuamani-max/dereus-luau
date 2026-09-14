@@ -25,8 +25,12 @@ jobs:
           test -f src/Diagnostics.lua
           test -f src/Registry.lua
           test -f src/Store.lua
+          test -f src/LuaCompat.lua
+          test -f bundle.lua
+          grep -q 'Dereus Library 2.8.0 single-file bundle' bundle.lua
+          ! grep -q 'require(script.' bundle.lua
           test -f docs/NOTICE.md
           test -f src/init.lua
           test -f CONTRIBUTING.md
           test -f SECURITY.md
-          grep -q 'Version = "2.7.0"' src/Dereus.lua
+          grep -q 'Version = "2.8.0"' src/Dereus.lua

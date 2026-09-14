@@ -53,4 +53,24 @@ function Style.Surface(instance, theme, options)
     return instance
 end
 
+function Style.Focus(instance, theme, active)
+    local stroke = instance:FindFirstChild("DereusFocus") or Instance.new("UIStroke")
+    stroke.Name = "DereusFocus"
+    stroke.Color = theme.Primary
+    stroke.Thickness = active and 2 or 1
+    stroke.Transparency = active and 0.1 or 1
+    stroke.Parent = instance
+    return stroke
+end
+
+function Style.Glow(instance, color, transparency)
+    local gradient = instance:FindFirstChild("DereusGlow") or Instance.new("UIGradient")
+    gradient.Name = "DereusGlow"
+    gradient.Color = ColorSequence.new(color or Color3.new(1, 1, 1))
+    gradient.Transparency = NumberSequence.new(transparency == nil and 0.85 or transparency)
+    gradient.Rotation = 45
+    gradient.Parent = instance
+    return gradient
+end
+
 return Style
